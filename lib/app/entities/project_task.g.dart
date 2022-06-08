@@ -15,8 +15,8 @@ extension GetProjectTaskCollection on Isar {
 const ProjectTaskSchema = CollectionSchema(
   name: 'ProjectTask',
   schema:
-      '{"name":"ProjectTask","idName":"ind","properties":[{"name":"created","type":"Long"},{"name":"duration","type":"Long"},{"name":"name","type":"String"}],"indexes":[],"links":[]}',
-  idName: 'ind',
+      '{"name":"ProjectTask","idName":"id","properties":[{"name":"created","type":"Long"},{"name":"duration","type":"Long"},{"name":"name","type":"String"}],"indexes":[],"links":[]}',
+  idName: 'id',
   propertyIds: {'created': 0, 'duration': 1, 'name': 2},
   listProperties: {},
   indexIds: {},
@@ -37,15 +37,15 @@ const ProjectTaskSchema = CollectionSchema(
 );
 
 int? _projectTaskGetId(ProjectTask object) {
-  if (object.ind == Isar.autoIncrement) {
+  if (object.id == Isar.autoIncrement) {
     return null;
   } else {
-    return object.ind;
+    return object.id;
   }
 }
 
 void _projectTaskSetId(ProjectTask object, int id) {
-  object.ind = id;
+  object.id = id;
 }
 
 List<IsarLinkBase> _projectTaskGetLinks(ProjectTask object) {
@@ -86,7 +86,7 @@ ProjectTask _projectTaskDeserializeNative(
   final object = ProjectTask();
   object.created = reader.readDateTime(offsets[0]);
   object.duration = reader.readLong(offsets[1]);
-  object.ind = id;
+  object.id = id;
   object.name = reader.readString(offsets[2]);
   return object;
 }
@@ -113,7 +113,7 @@ dynamic _projectTaskSerializeWeb(
   IsarNative.jsObjectSet(
       jsObj, 'created', object.created.toUtc().millisecondsSinceEpoch);
   IsarNative.jsObjectSet(jsObj, 'duration', object.duration);
-  IsarNative.jsObjectSet(jsObj, 'ind', object.ind);
+  IsarNative.jsObjectSet(jsObj, 'id', object.id);
   IsarNative.jsObjectSet(jsObj, 'name', object.name);
   return jsObj;
 }
@@ -129,7 +129,7 @@ ProjectTask _projectTaskDeserializeWeb(
       : DateTime.fromMillisecondsSinceEpoch(0);
   object.duration =
       IsarNative.jsObjectGet(jsObj, 'duration') ?? double.negativeInfinity;
-  object.ind = IsarNative.jsObjectGet(jsObj, 'ind');
+  object.id = IsarNative.jsObjectGet(jsObj, 'id');
   object.name = IsarNative.jsObjectGet(jsObj, 'name') ?? '';
   return object;
 }
@@ -146,8 +146,8 @@ P _projectTaskDeserializePropWeb<P>(Object jsObj, String propertyName) {
     case 'duration':
       return (IsarNative.jsObjectGet(jsObj, 'duration') ??
           double.negativeInfinity) as P;
-    case 'ind':
-      return (IsarNative.jsObjectGet(jsObj, 'ind')) as P;
+    case 'id':
+      return (IsarNative.jsObjectGet(jsObj, 'id')) as P;
     case 'name':
       return (IsarNative.jsObjectGet(jsObj, 'name') ?? '') as P;
     default:
@@ -159,65 +159,64 @@ void _projectTaskAttachLinks(IsarCollection col, int id, ProjectTask object) {}
 
 extension ProjectTaskQueryWhereSort
     on QueryBuilder<ProjectTask, ProjectTask, QWhere> {
-  QueryBuilder<ProjectTask, ProjectTask, QAfterWhere> anyInd() {
+  QueryBuilder<ProjectTask, ProjectTask, QAfterWhere> anyId() {
     return addWhereClauseInternal(const IdWhereClause.any());
   }
 }
 
 extension ProjectTaskQueryWhere
     on QueryBuilder<ProjectTask, ProjectTask, QWhereClause> {
-  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> indEqualTo(
-      int ind) {
+  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> idEqualTo(int id) {
     return addWhereClauseInternal(IdWhereClause.between(
-      lower: ind,
+      lower: id,
       includeLower: true,
-      upper: ind,
+      upper: id,
       includeUpper: true,
     ));
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> indNotEqualTo(
-      int ind) {
+  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> idNotEqualTo(
+      int id) {
     if (whereSortInternal == Sort.asc) {
       return addWhereClauseInternal(
-        IdWhereClause.lessThan(upper: ind, includeUpper: false),
+        IdWhereClause.lessThan(upper: id, includeUpper: false),
       ).addWhereClauseInternal(
-        IdWhereClause.greaterThan(lower: ind, includeLower: false),
+        IdWhereClause.greaterThan(lower: id, includeLower: false),
       );
     } else {
       return addWhereClauseInternal(
-        IdWhereClause.greaterThan(lower: ind, includeLower: false),
+        IdWhereClause.greaterThan(lower: id, includeLower: false),
       ).addWhereClauseInternal(
-        IdWhereClause.lessThan(upper: ind, includeUpper: false),
+        IdWhereClause.lessThan(upper: id, includeUpper: false),
       );
     }
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> indGreaterThan(
-      int ind,
+  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> idGreaterThan(
+      int id,
       {bool include = false}) {
     return addWhereClauseInternal(
-      IdWhereClause.greaterThan(lower: ind, includeLower: include),
+      IdWhereClause.greaterThan(lower: id, includeLower: include),
     );
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> indLessThan(int ind,
+  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> idLessThan(int id,
       {bool include = false}) {
     return addWhereClauseInternal(
-      IdWhereClause.lessThan(upper: ind, includeUpper: include),
+      IdWhereClause.lessThan(upper: id, includeUpper: include),
     );
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> indBetween(
-    int lowerInd,
-    int upperInd, {
+  QueryBuilder<ProjectTask, ProjectTask, QAfterWhereClause> idBetween(
+    int lowerId,
+    int upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return addWhereClauseInternal(IdWhereClause.between(
-      lower: lowerInd,
+      lower: lowerId,
       includeLower: includeLower,
-      upper: upperInd,
+      upper: upperId,
       includeUpper: includeUpper,
     ));
   }
@@ -324,55 +323,55 @@ extension ProjectTaskQueryFilter
     ));
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> indIsNull() {
+  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> idIsNull() {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.isNull,
-      property: 'ind',
+      property: 'id',
       value: null,
     ));
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> indEqualTo(
+  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> idEqualTo(
       int value) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
-      property: 'ind',
+      property: 'id',
       value: value,
     ));
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> indGreaterThan(
+  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> idGreaterThan(
     int value, {
     bool include = false,
   }) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.gt,
       include: include,
-      property: 'ind',
+      property: 'id',
       value: value,
     ));
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> indLessThan(
+  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> idLessThan(
     int value, {
     bool include = false,
   }) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.lt,
       include: include,
-      property: 'ind',
+      property: 'id',
       value: value,
     ));
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> indBetween(
+  QueryBuilder<ProjectTask, ProjectTask, QAfterFilterCondition> idBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return addFilterConditionInternal(FilterCondition.between(
-      property: 'ind',
+      property: 'id',
       lower: lower,
       includeLower: includeLower,
       upper: upper,
@@ -505,12 +504,12 @@ extension ProjectTaskQueryWhereSortBy
     return addSortByInternal('duration', Sort.desc);
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> sortByInd() {
-    return addSortByInternal('ind', Sort.asc);
+  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> sortById() {
+    return addSortByInternal('id', Sort.asc);
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> sortByIndDesc() {
-    return addSortByInternal('ind', Sort.desc);
+  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> sortByIdDesc() {
+    return addSortByInternal('id', Sort.desc);
   }
 
   QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> sortByName() {
@@ -540,12 +539,12 @@ extension ProjectTaskQueryWhereSortThenBy
     return addSortByInternal('duration', Sort.desc);
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> thenByInd() {
-    return addSortByInternal('ind', Sort.asc);
+  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> thenById() {
+    return addSortByInternal('id', Sort.asc);
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> thenByIndDesc() {
-    return addSortByInternal('ind', Sort.desc);
+  QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> thenByIdDesc() {
+    return addSortByInternal('id', Sort.desc);
   }
 
   QueryBuilder<ProjectTask, ProjectTask, QAfterSortBy> thenByName() {
@@ -567,8 +566,8 @@ extension ProjectTaskQueryWhereDistinct
     return addDistinctByInternal('duration');
   }
 
-  QueryBuilder<ProjectTask, ProjectTask, QDistinct> distinctByInd() {
-    return addDistinctByInternal('ind');
+  QueryBuilder<ProjectTask, ProjectTask, QDistinct> distinctById() {
+    return addDistinctByInternal('id');
   }
 
   QueryBuilder<ProjectTask, ProjectTask, QDistinct> distinctByName(
@@ -587,8 +586,8 @@ extension ProjectTaskQueryProperty
     return addPropertyNameInternal('duration');
   }
 
-  QueryBuilder<ProjectTask, int?, QQueryOperations> indProperty() {
-    return addPropertyNameInternal('ind');
+  QueryBuilder<ProjectTask, int?, QQueryOperations> idProperty() {
+    return addPropertyNameInternal('id');
   }
 
   QueryBuilder<ProjectTask, String, QQueryOperations> nameProperty() {

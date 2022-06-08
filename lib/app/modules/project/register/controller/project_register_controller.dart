@@ -1,9 +1,12 @@
 
 
-import 'package:bloc/bloc.dart';
-import 'package:job_time/app/modules/project/register/project_register_page.dart';
+import 'dart:developer';
 
+import 'package:bloc/bloc.dart';
+
+import '../../../../entities/project_status.dart';
 import '../../../../services/projects/project_service.dart';
+import '../../../../view_models/project_model.dart';
 
 part 'project_register_state.dart';
 
@@ -16,6 +19,24 @@ class ProjectRegisterController extends Cubit<ProjectRegisterStatus> {
   super(ProjectRegisterStatus.initial);
 
   Future<void> register(String name, int estimate) async {
-    emit(ProjectRegisterStatus.loading);
+    try {
+      emit(ProjectRegisterStatus.loading);
+      
+      final project = ProjectModel (
+        name : name,
+        estimate: estimate,
+        status : ProjectStatus.em_andamento,
+        tasks: [],
+      );
+      
+      await _projectService.register(project);
+      emit(ProjectRegisterStatus.sucess);
+    } catch (e, s) {
+
+      log('Erro ao salvar projeto', error: e, stackTrace: s);
+      emit(ProjectRegisterStatus.failure);
+
+    }
+
   }
 }
