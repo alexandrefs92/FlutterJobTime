@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "922123627799",
+    "project_id": "felix-job-timer-ofc",
+    "storage_bucket": "felix-job-timer-ofc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922123627799:android:65b13964f8582d280d5b52",
+        "android_client_info": {
+          "package_name": "br.com.academiadoflutter.job_time"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922123627799-56vms3kh4olkn2o89c94k5to3tbcoikn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGc8d6ceFhdTfOibB855enAkYauhfgAS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922123627799-56vms3kh4olkn2o89c94k5to3tbcoikn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
