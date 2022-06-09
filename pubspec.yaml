@@ -104,7 +104,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Schyler
+    - family: JobTimerIcons
       fonts:
       - asset: lib/assets/fonts/JobTimerIcons.ttf
   #       - asset: fonts/Schyler-Italic.ttf

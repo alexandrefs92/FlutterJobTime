@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../../../core/ui/button_with_loader.dart';
 import 'controller/project_register_controller.dart';
 
 class ProjectRegisterPage extends StatefulWidget {
@@ -33,7 +34,7 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
       listener: (context, state) {
         switch (state) {
           case ProjectRegisterStatus.sucess:
-          Navigator.pop(context);
+            Navigator.pop(context);
             break;
           case ProjectRegisterStatus.failure:
             AsukaSnackbar.alert('Erro ao salvar projeto').show();
@@ -81,22 +82,15 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                 SizedBox(
                   height: 10,
                 ),
-                BlocSelector<ProjectRegisterController, ProjectRegisterStatus,
-                    bool>(
-                  bloc: widget.controller,
-                  selector: (state) => state == ProjectRegisterStatus.loading,
-                  builder: (context, showLoading) {
-                    return Visibility(
-                        visible: showLoading,
-                        child: const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        ));
-                  },
-                ),
+
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 49,
-                  child: ElevatedButton(
+                  child: ButtonWithLoader<ProjectRegisterController,
+                          ProjectRegisterStatus>(
+                      bloc: widget.controller,
+                      selector: (state) =>
+                          state == ProjectRegisterStatus.loading,
                       onPressed: () async {
                         final formValid =
                             _formKey.currentState?.validate() ?? false;
@@ -108,7 +102,7 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                           await widget.controller.register(name, estimate);
                         }
                       },
-                      child: const Text('Salvar')),
+                      label: 'Salvar'),
                 )
               ],
             ),
