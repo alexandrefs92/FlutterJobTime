@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:job_time/app/modules/project/detail/controller/project_detail_controller.dart';
 
 import '../../../../entities/project_status.dart';
 import '../../../../view_models/project_model.dart';
@@ -36,7 +37,7 @@ class ProjectDetailAppbar extends SliverAppBar {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children:  [ 
-                         Text('${projectModel.tasks.length}} tasks'), 
+                         Text('${projectModel.tasks.length} tasks'), 
                            Visibility(
                             visible: projectModel.status != ProjectStatus.finalizado,
                             replacement: const Text('Projeto finalizado'),
@@ -62,7 +63,10 @@ class _NewTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () { Modular.to.pushNamed('/project/task/', arguments: projectModel); },
+      onTap: () async { 
+        await Modular.to.pushNamed('/project/task/', arguments: projectModel); 
+        Modular.get<ProjectDetailController>().updateProject();
+        },
       child: Row(
         children: [
           Padding(

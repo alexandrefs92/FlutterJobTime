@@ -35,4 +35,11 @@ class HomeController extends Cubit<HomeState> {
       projectFilter: status,
     ));
   }
+
+  void updateList() {
+    if (state.status == HomeStatus.complete) {
+      filter(state.projectFilter);
+          }
+
+  }
 }

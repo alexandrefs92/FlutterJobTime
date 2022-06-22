@@ -1,5 +1,4 @@
 
-import 'dart:js';
 
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:job_time/app/modules/project/detail/task/controller/task_controller.dart';
@@ -12,7 +11,7 @@ class TaskModule extends Module {
 
   @override
   List<Bind<Object>> get binds => [
-    BlocBind.lazySingleton((i) => TaskController())
+    BlocBind.lazySingleton((i) => TaskController(projectService: i()))
   ];
 
     @override

@@ -6,6 +6,7 @@ import 'package:job_time/app/modules/project/detail/widget/project_detail_appbar
 import 'package:job_time/app/modules/project/detail/widget/project_pie_chart.dart';
 import 'package:job_time/app/modules/project/detail/widget/project_taks_tile.dart';
 
+import '../../../entities/project_status.dart';
 import '../../../view_models/project_model.dart';
 import 'controller/project_detail_controller.dart';
 
@@ -52,6 +53,49 @@ class ProjectDetailPage extends StatelessWidget {
       ),
     );
   }
+
+
+  Widget _buildProjectDetail(BuildContext context, ProjectModel projectModel) {
+
+  final totalTask = projectModel.tasks.fold<int>(0, (totalValue, task) {
+    return totalValue += task.duration;
+  },);
+
+  return CustomScrollView(slivers: [
+    ProjectDetailAppbar(projectModel: projectModel,),
+    SliverList(
+      delegate: SliverChildListDelegate(
+        [
+           Padding(
+            padding: const EdgeInsets.only(top: 50, bottom: 50),
+            child: ProjectPieChart(
+              projectEstimate: projectModel.estimate,
+              totalTask: totalTask,
+            ),
+          ),
+          ...projectModel.tasks.map((task) => ProjectTaksTile(task: task,)).toList(),
+        ],
+      ),
+    ),
+    SliverFillRemaining(
+        hasScrollBody: false,
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Visibility(
+              visible: projectModel.status != ProjectStatus.finalizado,
+              child: ElevatedButton.icon(
+                  onPressed: () {
+                     controller.finishProject();
+                  },
+                  icon: Icon(JobTimerIcons.ok_circled2),
+                  label: Text('Finalizar Projeto')),
+            ),
+          ),
+        ))
+  ]);
+}
 }
 
 class _NewTasks extends StatelessWidget {
@@ -74,33 +118,4 @@ class _NewTasks extends StatelessWidget {
   }
 }
 
-Widget _buildProjectDetail(BuildContext context, ProjectModel projectModel) {
-  return CustomScrollView(slivers: [
-    ProjectDetailAppbar(projectModel: projectModel,),
-    SliverList(
-      delegate: SliverChildListDelegate(
-        [
-          const Padding(
-            padding: EdgeInsets.only(top: 50, bottom: 50),
-            child: ProjectPieChart(),
-          ),
-          ProjectTaksTile(),
-          ProjectTaksTile(),
-          ProjectTaksTile(),
-        ],
-      ),
-    ),
-    SliverFillRemaining(
-        hasScrollBody: false,
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(JobTimerIcons.ok_circled2),
-                label: Text('Finalizar Projeto')),
-          ),
-        ))
-  ]);
-}
+
